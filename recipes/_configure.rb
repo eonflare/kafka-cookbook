@@ -28,7 +28,7 @@ template ::File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
 end
 
 template kafka_init_opts[:env_path] do
-  source 'kafka.env.erb'
+  source kafka_init_opts.fetch(:env_template, 'kafka.env.erb')
   owner 'root'
   group 'root'
   mode '644'

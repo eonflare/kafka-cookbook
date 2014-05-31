@@ -36,10 +36,8 @@ suites:
     run_list:
       - recipe[java::default]
       - recipe[kafka::default]
-    excludes:
-      - centos-6.5
-      - debian-7.4
-      - fedora-20
+    includes:
+      - ubuntu-14.04
     attributes:
       kafka:
         init_style: 'upstart'
@@ -55,6 +53,21 @@ suites:
       - recipe[kafka::default]
     attributes:
       kafka:
+        version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
+        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
+        md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
+        zookeeper:
+          connect: ['localhost:2181']
+          connection_timeout_ms: 15_000
+  - name: init-style-systemd
+    run_list:
+      - recipe[java::default]
+      - recipe[kafka::default]
+    includes:
+      - fedora-20
+    attributes:
+      kafka:
+        init_style: 'systemd'
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
         checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
         md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
@@ -86,6 +99,22 @@ suites:
     attributes:
       kafka:
         install_method: 'source'
+        version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
+        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
+        md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
+        zookeeper:
+          connect: ['localhost:2181']
+          connection_timeout_ms: 15_000
+  - name: source-init-style-systemd
+    run_list:
+      - recipe[java::default]
+      - recipe[kafka::default]
+    includes:
+      - fedora-20
+    attributes:
+      kafka:
+        install_method: 'source'
+        init_style: 'systemd'
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
         checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
         md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
